@@ -7,13 +7,15 @@ public class Test {
         }
     }
     public static void main(String[] args) {
-        int x = 0;
-        for (int y=1; y<=10; y++) {
-            for (int z=y; z<=10; z++) {
-                x++;
-            }
+        int[] factors = {2, 3, 4, 7, 2, 5};
+        int product = 1;
+
+        for (int i=1; i<factors.length; i += 2) {
+            int interim = factors[i] % factors[i-1];
+            product *= interim;
         }
-        System.out.println(x);
+
+
     }
 
 }
