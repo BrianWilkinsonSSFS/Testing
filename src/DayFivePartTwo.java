@@ -4,28 +4,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class DayFivePartTwo {
     private static Set<Point> duplicates = new HashSet<>();
-
-    public static void addDiagonalPoints(Point p1, Point p2, Set<Point> points) {
-        int distance = Math.abs(p1.x - p2.x);
-        if (p1.y < p2.y) {
-            for (int i=1; i<=distance; i++) {
-                Point newP = new Point(p1.x+i, p1.y+i);
-                if (!points.add(newP)) {
-                    duplicates.add(newP);
-                }
-            }
-        } else {
-            for (int j=1; j<=distance; j++) {
-                Point newP = new Point(p1.x+j, p1.y-j);
-                if (!points.add(newP)) {
-                    duplicates.add(newP);
-                }
-            }
-        }
-    }
 
     public static void addPointsToSet(Point p1, Point p2, Set<Point> points) {
 
@@ -44,7 +27,7 @@ public class DayFivePartTwo {
                 }
             }
 
-        } else {
+        } else if (p1.y == p2.y) { // Horizontal Line
             int low = p1.x;
             int high = p2.x;
             if (p2.x < p1.x) {
@@ -57,6 +40,32 @@ public class DayFivePartTwo {
                     duplicates.add(newP);
                 }
             }
+        }
+
+        else { // Diagonal Line
+            int xInc = 1;
+            int yInc = 1;
+            int x = p1.x;
+            int y = p1.y;
+            if (p1.x > p2.x)
+                xInc = -1;
+            if (p1.y > p2.y)
+                yInc = -1;
+            while (x != p2.x) {
+
+                Point newP = new Point(x, y);
+                if (!points.add(newP)) {
+                    duplicates.add(newP);
+                }
+                x += xInc;
+                y += yInc;
+            }
+            // To get the last point
+            Point newP = new Point(x, y);
+            if (!points.add(newP)) {
+                duplicates.add(newP);
+            }
+
         }
     }
 
@@ -84,10 +93,7 @@ public class DayFivePartTwo {
         Scanner scan = new Scanner(new File("files/points.txt"));
         while (scan.hasNextLine()) {
             Point[] p = getPoints(scan.nextLine());
-            if (isVorH(p[0], p[1]))
-                addPointsToSet(p[0], p[1], points);
-            else
-                addDiagonalPoints(p[0], p[1], points);
+            addPointsToSet(p[0], p[1], points);
         }
         scan.close();
         System.out.println(duplicates.size());
