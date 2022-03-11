@@ -1,19 +1,25 @@
+import java.util.ArrayList;
+
 public class Test {
 
-    public static void doStuff(int num1, int num2) {
-        for (int i=0; i<num1; i++) {
-            if (i%num2==0 && i%4 == 2)
-                System.out.println(i + " ");
-        }
+    static ArrayList<Integer> list;
+    public static int recur(int n) {
+        if (n <= 10)
+            return n*2;
+        else return recur(recur(n/3));
     }
-    public static void main(String[] args) {
-        int[] factors = {2, 3, 4, 7, 2, 5};
-        int product = 1;
 
-        for (int i=1; i<factors.length; i += 2) {
-            int interim = factors[i] % factors[i-1];
-            product *= interim;
+    public static void main(String[] args) {
+        int[][] mat = {{2, 1, 3, 4}, {9, 7, 2, 1}, {0, 2, 5, 6}};
+
+        for (int r=1; r<mat.length; r++) {
+            for (int c=1; c<mat[0].length; c++) {
+                if ((r + c) % 2 == 0)
+                    mat[r][c] = 2 * mat[r-1][c-1] + c;
+            }
         }
+        System.out.println(mat[2][2]);
+
 
 
     }
